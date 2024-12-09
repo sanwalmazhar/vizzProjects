@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana NFT Purchase with CrossMint</title>
+    <script src="https://unpkg.com/@crossmint/client-sdk-vanilla-ui@1.0.0-alpha.1/lib/index.global.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        input {
+            padding: 10px;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Purchase Your NFT</h1>
+    <input type="text" id="contract address " placeholder="Enter your contract  address here" />
+    <br>
+
+    <crossmint-pay-button
+        id="paymentButton"
+        projectId="6ce1f5d0-fa97-40c8-a703-c26e1a92dab5" 
+        collectionId="42628fa0-83b2-421b-b1c6-74dc2dd157de" 
+        templateId="a166b083-ace5-4a3d-8ffa-f1b71b8e15dc" 
+        environment="staging"
+        checkoutProps='{"paymentMethods":["fiat","SOL"]}' 
+
+        mintTo="0x35D465c90EF47532Ab293322B44D0688E4489ce8"
+       
+
+    ></crossmint-pay-button>
+
+    <script>
+        const paymentButton = document.getElementById('paymentButton');
+        const basePrice = 0.1; // Adjust the price as necessary
+
+        function updatePaymentButton() {
+            const mintConfig = {
+                type: "solana", // Specify the type
+                totalPrice: basePrice.toFixed(2), // Set the total price
+                quantity: "1" // Set quantity for minting
+            };
+
+            paymentButton.setAttribute('mintConfig', JSON.stringify(mintConfig));
+        }
+
+        function mintToAddress() {
+            const address = document.getElementById("address").value;
+            paymentButton.setAttribute("mintTo", address);
+        }
+
+        document.getElementById("address").addEventListener("input", mintToAddress);
+
+        // Initial update for the payment button
+        updatePaymentButton();
+    </script>
+</body>
+</html>
